@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+</head>
+
+
+<body>
+    <h2>Add Your Product Here</h2>
+    <?php echo $this->tag->form("login/index"); ?>
+
+    <p>
+        <label for="name">Name</label>
+        <?php echo $this->tag->textField("name"); ?>
+    </p>
+    <p>
+        <label for="category">Category Name</label>
+        <?php echo $this->tag->textField("category"); ?>
+    </p>
+    <p>
+        <label for="price">Price</label>
+        <?php echo $this->tag->textField("price"); ?>
+    </p>
+    <p>
+        <label for="stock">Stock</label>
+        <?php echo $this->tag->textField("stock"); ?>
+    </p>
+    <br>
+
+    <h2>Add More Fields</h2>
+
+
+    </br>
+    <div class="col-8">
+        <div id="newRow" class="col-9"></div>
+        <button id="addRow" type="button" class="btn btn-info">Add More Fields</button>
+
+         
+    </div><br> 
+    <div class="col-8">
+        <div id="newRow1" class="col-9"></div>
+        <button id="addRow1" type="button" class="btn btn-info">Add Variants</button>
+
+        <!-- <input type="submit" name="addproduct" value="Add Product" class="btn btn-success"> -->
+        <input type="submit" name="addproduct" value="Add Product" class="btn btn-success">
+    </div>
+    </form>
+</body>
+<script type="text/javascript">
+    // add row
+    $("#addRow").click(function() {
+        var html = '';
+        html += '<div id="inputFormRow" class="row">';
+        html += '<div class="input-group mb-3">';
+        html += '<input type="text" name="label[]" class="form-control m-input" placeholder="Enter label" autocomplete="off"><input type="text" name="value[]" class="form-control m-input" placeholder="Enter value" autocomplete="off">';
+
+        html += '<div class="input-group-append">';
+        html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+        html += '</div>';
+        html += '</div>';
+
+        $('#newRow').append(html);
+        // $('#newRow').append(html);
+    });
+
+    // remove row
+    $(document).on('click', '#removeRow', function() {
+        $(this).closest('#inputFormRow').remove();
+    });
+
+$("#addRow1").click(function(){
+    var html = '';
+    html += '<div id="inputFormRow" class="row">';
+        html += '<div class="input-group mb-3">';
+        html += '<input type="text" name="label1[]" class="form-control m-input" placeholder="Enter label" autocomplete="off"><input type="number" name="price1[]" class="form-control m-input" placeholder="Enter price" autocomplete="off"><input type="text" name="value1[]" class="form-control m-input" placeholder="Enter colour" autocomplete="off">';
+
+        html += '<div class="input-group-append">';
+        html += '<button id="removeRow" type="button" class="btn btn-danger">Remove</button>';
+        html += '</div>';
+        html += '</div>';
+
+        $('#newRow1').append(html);
+})
+
+
+
+</script>
+
+</html>
+
+<!-- <div class="alert alert-<?php echo $success === true ? 'success' : 'danger'; ?>">
+    <?php //echo isset($message)?$message:''; 
+    ?>
+</div> -->
