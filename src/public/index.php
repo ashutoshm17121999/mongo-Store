@@ -135,7 +135,7 @@ $container->set(
         $mongo = new \MongoDB\Client("mongodb://mongo", array("username"=>'root', "password"=>"password123"));
         // mongo "mongodb+srv://sandbox.g819z.mongodb.net/myFirstDatabase" --username root
 
-        return $mongo->store->products;
+        return $mongo->store;
     },
     true
 );

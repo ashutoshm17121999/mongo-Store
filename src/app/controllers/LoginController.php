@@ -36,7 +36,7 @@ class LoginController extends Controller
             );
             // $data = $this->request->getPost();
             // $this->mongo->insertOne($data);
-            $this->mongo->insertOne($data);
+            $this->mongo->products->insertOne($data);
             // print_r($name);
             // die;
         }
@@ -105,7 +105,11 @@ class LoginController extends Controller
     }
     public function listProductsAction()
     {
-        $dataa = $this->mongo->find();
+        $dataa = $this->mongo->products->find();
+        // foreach($dataa as $k=>$v){
+        //     print_r($v);
+        //     die;
+        // }
         if ($this->request->getPost("search")) {
             // die('hi');
             $srch = $this->request->getPost('searchList');
@@ -138,7 +142,7 @@ class LoginController extends Controller
             // echo 'fvkodjvfknkvnf';
             // die;
             $id = $this->request->getPost('id');
-            $data = $this->mongo->deleteOne([
+            $data = $this->mongo->products->deleteOne([
                 "_id" => new MongoDB\BSON\ObjectID($id)
             ]);
 
@@ -147,7 +151,7 @@ class LoginController extends Controller
         if ($this->request->getPost('edit')) {
 
             $id = $this->request->getPost('id');
-            $data = $this->mongo->find([
+            $data = $this->mongo->products->find([
                 '_id' => new MongoDB\BSON\ObjectID($id)
             ]);
             foreach ($data as $k => $v) {
@@ -178,7 +182,7 @@ class LoginController extends Controller
             "added_fields" => $additional
         );
 
-        $this->mongo->updateOne(["_id" => new MongoDB\BSON\ObjectID($id)], ['$set' => $data]);
-        // $this->response->redirect('/login');
+        $this->mongo->products->updateOne(["_id" => new MongoDB\BSON\ObjectID($id)], ['$set' => $data]);
+        $this->response->redirect('/login/listProducts');
     }
 }
