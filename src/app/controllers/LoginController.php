@@ -15,14 +15,14 @@ class LoginController extends Controller
         if ($this->request->getPost("addproduct")) {
             $key = $this->request->getPost('label');
             $value = $this->request->getPost('value');
-            
+
             $add_fields = array_combine($key, $value);
 
             $key1 = $this->request->getPost('label1');
             $price1 = $this->request->getPost('price1');
             $value1 = $this->request->getPost('value1');
             $add_variants = array_combine($key1, $value1);
-            $add_variants['price']=$price1;
+            $add_variants['price'] = $price1;
             // $add_variants = $this->request->getPost('');
             // print_r($add_fields);
             // die;
@@ -40,7 +40,7 @@ class LoginController extends Controller
             // print_r($name);
             // die;
         }
-        
+
         // if ($this->cookies->has('checkbox')) {
         //     $this->response->redirect('dashboard');
         // } else {
@@ -102,5 +102,83 @@ class LoginController extends Controller
         //         }
         //     }
         // }
+    }
+    public function listProductsAction()
+    {
+        $dataa = $this->mongo->find();
+        if ($this->request->getPost("search")) {
+            // die('hi');
+            $srch = $this->request->getPost('searchList');
+            $result = array();
+
+            foreach ($dataa as $k => $v) {
+                if (strtolower($v->name) == strtolower($srch)) {
+                    array_push($result, $v);
+                    // die;
+                    // $this->view->list = $v;
+                } else {
+                    $this->view->error = "<h3 class='alert alert-danger'>No Product Found !!</h3>";
+                }
+            }
+            $this->view->result = $result;
+        }
+
+        // } else {
+        //     $this->view->allResult = $dataa;
+        // }
+        // $collection = $this->mongo->find();
+        // $this->view->products = $collection;
+    }
+    public function popupAction()
+    {
+    }
+    public function updateListAction()
+    {
+        if ($this->request->getPost('delete')) {
+            // echo 'fvkodjvfknkvnf';
+            // die;
+            $id = $this->request->getPost('id');
+            $data = $this->mongo->deleteOne([
+                "_id" => new MongoDB\BSON\ObjectID($id)
+            ]);
+
+            $this->response->redirect('/login/listProducts');
+        }
+        if ($this->request->getPost('edit')) {
+
+            $id = $this->request->getPost('id');
+            $data = $this->mongo->find([
+                '_id' => new MongoDB\BSON\ObjectID($id)
+            ]);
+            foreach ($data as $k => $v) {
+                $this->view->data = $v;
+            }
+            // $this->response->redirect('/login/updateList');
+        }
+    }
+
+    public function updateProductAction()
+    {
+        $id = $this->request->getPost('id');
+        // print_r($id);
+        // die('sdkdfjvdfj');
+        // $product_name = $this->request->getPost('product_name');
+        // $product_category = $this->request->getPost('product_category');
+        // $product_price = $this->request->getPost('product_price');
+        // $product_stock = $this->request->getPost('product_stock');
+
+        $field = $this->request->getPost('field');
+        $value = $this->request->getPost('value');
+        $additional = array_combine($field, $value);
+        $data = array(
+            "name" => $this->request->getPost('product_name'),
+            "category" => $this->request->getPost('product_category'),
+            "price" => $this->request->getPost('product_price'),
+            "stock" => $this->request->getPost('product_stock'),
+            "added_fields" => $additional
+        );
+
+        $this->mongo->updateOne(["_id" => new MongoDB\BSON\ObjectID($id)], ['$set' => $data]);
+        // $this->response->redirect('/login');
     }
 }
