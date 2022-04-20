@@ -1,0 +1,31 @@
+<?php
+// echo 'ashutosh Mishra';
+// die;
+?>
+<h2>login using this form</h2>
+
+<?php echo $this->tag->form("admin/log/register"); ?>
+
+   
+
+    <p>
+        <label for="email">E-Mail</label>
+        <?php echo $this->tag->textField("email"); ?>
+    </p>
+    <p>
+        <label for="password">password</label>
+        <?php echo $this->tag->textField("password"); ?>
+    </p>
+
+    <p>
+        <?php echo $this->tag->submitButton("login"); ?>
+    </p>
+    <?php
+// if($error){
+//     echo $error;
+// }
+
+
+?>
+
+</form>

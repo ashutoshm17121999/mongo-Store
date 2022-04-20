@@ -1,0 +1,76 @@
+<style>
+  th,
+  td {
+    padding: 50px;
+  }
+</style>
+<h2> ORDER TABLE IS HERE</h2>
+<div>
+  <table class="table table-hover table-dark">
+
+    <tr>
+      <th>Product Name</th>
+      <th>Customer Name</th>
+      <th>Product Quantity</th>
+      <th>Order Status</th>
+      <th>Change Status</th>
+      <!-- <th>Select Date Range</th> -->
+    </tr>
+
+    <tbody>
+      <?php
+      $html = "";
+      foreach ($list as $k => $v) {
+        $html .= '<tr>
+                        <td>' . $v->product_name . '</td>
+                        <td>' . $v->customer_name . '</td>
+                        <td>' . $v->quantity . '</td>
+                        <td>' . $v->status . '</td>
+                        <td><form action="/order/listOrders" method="POST">
+                        <input type="hidden" name="id" value =' . $v->_id . '>
+                        <select name="status" onchange="this.form.submit()">
+                          <option value="choose">Choose status</option>
+                          <option value="paid">Paid</option>
+                          <option value="processing">Processing</option>
+                          <option value="dispatched">Dispatched</option>
+                          <option value="shipped">Shipped</option>
+                          <option value="refunded">Refunded</option>
+                        </select>
+                </form>
+                        </td>
+                        </tr>';
+      }
+      echo $html;
+      ?>
+      <form action="/order/listOrders" method="POST">
+        <input type="hidden" name="id" value=' . $v->_id . '>
+        <select name="status_filter" onchange="this.form.submit()">
+          <option value="choose">Choose status by filter</option>
+          <option value="paid">Paid</option>
+          <option value="processing">Processing</option>
+          <option value="dispatched">Dispatched</option>
+          <option value="shipped">Shipped</option>
+          <option value="refunded">Refunded</option>
+        </select>
+      </form>
+      <form action="/order/listOrders" method="POST">
+        <input type="hidden" name="id" value=' . $v->_id . '>
+        <select name="date_filter" onchange="this.form.submit()">
+          <option value="choose">Choose Date Range</option>
+          <option value="today">Today</option>
+          <option value="thisweek">This week</option>
+          <option value="thismonth">This Month</option>
+          <option value="custom">Custom</option>
+          <!-- <option value="shipped">Shipped</option>
+                          <option value="refunded">Refunded</option> -->
+        </select>
+
+        <?php if (isset($div)) {
+          echo $div; ?>
+          <input type="submit" name="custom" class="btn btn-primary mt-1" value="Check Orders">
+        <?php } ?>
+
+      </form>
+    </tbody>
+  </table>
+</div>

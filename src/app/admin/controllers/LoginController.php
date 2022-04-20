@@ -1,5 +1,7 @@
 <?php
 
+namespace Multi\Admin\Controllers;
+
 use Phalcon\Http\Request;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
@@ -185,4 +187,5 @@ class LoginController extends Controller
         $this->mongo->products->updateOne(["_id" => new MongoDB\BSON\ObjectID($id)], ['$set' => $data]);
         $this->response->redirect('/login/listProducts');
     }
+    
 }

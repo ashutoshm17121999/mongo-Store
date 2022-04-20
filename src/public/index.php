@@ -15,6 +15,7 @@ use Phalcon\Session\Manager;
 use Phalcon\Session\Adapter\Stream;
 use Phalcon\Session\Bag as SessionBag;
 use Phalcon\Http\Response\Cookies;
+use Phalcon\Mvc\Router;
 //use Phalcon\Config;
 use Phalcon\Config\ConfigFactory;
 require_once("../app/vendor/autoload.php");
@@ -68,9 +69,98 @@ $container->set(
         return $url;
     }
 );
+$container->set(
+    'router',
+    function () {
+        $router = new Router();
+
+        $router->setDefaultModule('admin');
+
+        $router->add(
+            '/admin/log/:action',
+            [
+                'module'     => 'admin',
+                'controller' => 'log',
+                'action'     => 1,
+            ]
+        );
+
+        $router->add(
+            '/admin/login/:action',
+            [
+                'module'     => 'admin',
+                'controller' => 'login',
+                'action'     => 1,
+            ]
+        );
+        $router->add(
+            '/admin/user/:action',
+            [
+                'module'     => 'admin',
+                'controller' => 'user',
+                'action'     => 1,
+            ]
+        );
+        // $router->add(
+        //     '/admin/addproduct/:action',
+        //     [
+        //         'module'     => 'admin',
+        //         'controller' => 'addproduct',
+        //         'action'     => 1,
+        //     ]
+        // );
+    
+        $router->add(
+            '/admin/order/:action',
+            [
+                'module'     => 'admin',
+                'controller' => 'order',
+                'action'     => 1,
+            ]
+        );
+        // $router->add(
+        //     '/signup/:action',
+        //     [
+        //         'module'     => 'front',
+        //         'controller' => 'signup',
+        //         'action'     => 1,
+        //     ]
+        // );
+
+        $router->add(
+            '/',
+            [
+                'module'     => 'admin',
+                'controller' => 'log',
+                'action'     => 'index',
+            ]
+        );
+
+        // $router->add(
+        //     '/products/:action',
+        //     [
+        //         'controller' => 'products',
+        //         'action'     => 1,
+        //     ]
+        // );
+
+        return $router;
+    }
+);
 
 $application = new Application($container);
-
+$application->registerModules(
+    [
+        'front' => [
+            'className' => \Multi\Front\Module::class,
+            'path'      => APP_PATH.'/front/Module.php',
+        ],
+        'admin'  => [
+            'className' => \Multi\Admin\Module::class,
+            'path'      => APP_PATH.'/admin/Module.php',
+        ]
+    ]
+);
 
 
 // $container->set(

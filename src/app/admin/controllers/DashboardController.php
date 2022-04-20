@@ -1,5 +1,7 @@
 <?php
 
+namespace Multi\Admin\Controllers;
+
 use Phalcon\Mvc\Controller;
 
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Multi\Admin\Controllers;
+
 use Phalcon\Mvc\Controller;
 
 class OrderController extends Controller
@@ -69,8 +71,25 @@ class OrderController extends Controller
                 $this->view->list = $orders;
             }
             if ($date_filter == "thismonth") {
-                $start_date = date("Y-m-d", strtotime("-1 month"));
+                $start_date = date("Y-m-d", strtotime("first day of this month"));
                 $end_date = date("Y-m-d");
+                $orders = array('ordered_date' => ['$gte' => $start_date, '$lte' => $end_date]);
+                $orders = $this->mongo->order->find($orders);
+                $this->view->list = $orders;
+            }
+            if ($date_filter == "custom") {
+                $html = '<div>
+                <input type="text" name="start_date" placeholder="Start Date"><br>
+                <input type="text" name="end_date" placeholder="End Date">
+            </div>';
+                // echo $html;
+                // die;
+                $this->view->div = $html;
+            }
+            if ($this->request->getPost('custom')) {
+                $start_date = $this->request->getPost('start_date');
+                $end_date = $this->request->getPost('end_date');
+                // die($start_date.''.$end_date);
                 $orders = array('ordered_date' => ['$gte' => $start_date, '$lte' => $end_date]);
                 $orders = $this->mongo->order->find($orders);
                 $this->view->list = $orders;
